@@ -128,18 +128,15 @@ Users earn reward points for returning lost items, and a leaderboard highlights 
 
 
 ## Team Contributions
+Aksa Rose Binu: Designed the website and added the main features like posting lost and found items.
 
+Drisya Santhosh:  set up login system, tested the project, and helped manage GitHub.
 
 ---
 
 ## License
+MIT license
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
-
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
 
 ---
 
