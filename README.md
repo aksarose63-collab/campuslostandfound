@@ -79,16 +79,24 @@ Users earn reward points for returning lost items, and a leaderboard highlights 
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+<p align="center">
+  <img src="./img.png" alt="Project Banner" width="100%">
+</p>
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]
 
-#### Diagrams
+<p align="center">
+  <img src="./img.png" alt="Project Banner" width="100%">
+</p>
+
+
+![Screenshot3]
+
+<p align="center">
+  <img src="./img.png" alt="Project Banner" width="100%">
+</p>
+
 
 **System Architecture:**
 
