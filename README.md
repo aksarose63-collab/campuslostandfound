@@ -87,7 +87,7 @@ Users earn reward points for returning lost items, and a leaderboard highlights 
 ![Screenshot2]
 
 <p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
+  <img src="./2.png" alt="Project Banner" width="100%">
 </p>
 
 
