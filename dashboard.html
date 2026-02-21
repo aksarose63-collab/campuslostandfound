@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – CampusReclaim</title>
+    <meta name="description" content="Manage and browse lost & found items on campus.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+
+<body>
+
+    <div class="dashboard-page">
+
+        <!-- ── Navbar ──────────────────────────── -->
+        <nav class="navbar">
+            <a class="navbar-brand" href="dashboard.html">
+                <div class="navbar-brand-icon">🔍</div>
+                <div class="navbar-brand-text">Campus<span>Reclaim</span></div>
+            </a>
+            <div class="navbar-user">
+                <div class="nav-points-badge">
+                    <span>🏆</span>
+                    <span id="nav-points">0 pts</span>
+                </div>
+                <div id="nav-avatar">JD</div>
+                <span id="nav-username">User</span>
+                <button id="logout-btn">Sign Out</button>
+            </div>
+        </nav>
+
+        <!-- ── Main Content ───────────────────── -->
+        <div id="main-content" class="dashboard-main">
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-total">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Total Items</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-lost">📍</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-lost">0</div>
+                        <div class="stat-label">Lost Items</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-found">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-found">0</div>
+                        <div class="stat-label">Found Items</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-returned">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="stat-resolved">0</div>
+                        <div class="stat-label">Returned</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar: Tabs + Action Buttons -->
+            <div class="toolbar">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="all">🌐 All Items</button>
+                    <button class="tab-btn" data-tab="lost">📍 Lost</button>
+                    <button class="tab-btn" data-tab="found">🎯 Found</button>
+                    <button class="tab-btn" data-tab="mine">👤 My Reports</button>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn btn-report-lost" id="btn-report-lost">📍 Report Lost</button>
+                    <button class="btn btn-report-found" id="btn-report-found">🎯 Report Found</button>
+                    <button class="btn btn-leaderboard-nav" id="btn-leaderboard">🏆 Leaderboard</button>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="search-wrapper">
+                    <span class="search-icon">🔎</span>
+                    <input type="text" id="search-input" placeholder="Search by name, description, or location...">
+                </div>
+                <select class="filter-select" id="filter-category">
+                    <option value="all">All Categories</option>
+                    <option value="Electronics">💻 Electronics</option>
+                    <option value="Bags">🎒 Bags</option>
+                    <option value="Clothing">👕 Clothing</option>
+                    <option value="Books">📚 Books</option>
+                    <option value="Keys">🔑 Keys</option>
+                    <option value="Wallet">👛 Wallet</option>
+                    <option value="Jewelry">💍 Jewelry</option>
+                    <option value="Sports">⚽ Sports</option>
+                    <option value="Documents">📄 Documents</option>
+                    <option value="Other">📦 Other</option>
+                </select>
+                <select class="filter-select" id="filter-status">
+                    <option value="all">All Statuses</option>
+                    <option value="Open">🔍 Open</option>
+                    <option value="Pending">⏳ Pending</option>
+                    <option value="Returned">✅ Returned</option>
+                </select>
+            </div>
+
+            <!-- Items Grid -->
+            <div class="items-grid" id="items-grid">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading items...</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Leaderboard Panel ──────────────── -->
+        <div id="leaderboard-panel" class="hidden">
+            <div class="lb-header">
+                <h2>🏆 Leaderboard</h2>
+                <button class="lb-back-btn" onclick="showMainContent()">← Back to Dashboard</button>
+            </div>
+            <div id="lb-container"></div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════ MODALS ═══════════════ -->
+
+    <!-- Report Item Modal -->
+    <div class="modal-backdrop" id="report-modal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h2 id="report-modal-title">📍 Report Lost Item</h2>
+                <button class="modal-close" title="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="report-form">
+                    <input type="hidden" id="form-type" value="lost">
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-name">Item Name *</label>
+                        <input class="form-input" id="form-name" type="text" placeholder="e.g. Blue Jansport Backpack"
+                            required maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-description">Description</label>
+                        <textarea class="form-input" id="form-description"
+                            placeholder="Describe the item — color, brand, unique features..." rows="3"
+                            maxlength="500"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" id="category-row">
+                            <label class="form-label" for="form-category">Category</label>
+                            <select class="form-input" id="form-category">
+                                <option value="Other">📦 Other</option>
+                                <option value="Electronics">💻 Electronics</option>
+                                <option value="Bags">🎒 Bags</option>
+                                <option value="Clothing">👕 Clothing</option>
+                                <option value="Books">📚 Books</option>
+                                <option value="Keys">🔑 Keys</option>
+                                <option value="Wallet">👛 Wallet</option>
+                                <option value="Jewelry">💍 Jewelry</option>
+                                <option value="Sports">⚽ Sports</option>
+                                <option value="Documents">📄 Documents</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" id="date-label" for="form-date">Date Lost *</label>
+                            <input class="form-input" id="form-date" type="date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-location">Location *</label>
+                        <input class="form-input" id="form-location" type="text"
+                            placeholder="e.g. Library 2nd floor, near entrance" required maxlength="150">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Photo (optional)</label>
+                        <label class="file-input-label" for="form-image">
+                            <span class="upload-icon">📸</span>
+                            <span class="upload-text">Click to upload an image</span>
+                            <span class="upload-hint">JPG, PNG, WEBP up to 5MB</span>
+                        </label>
+                        <input type="file" id="form-image" accept="image/*">
+                        <div id="image-preview-container"></div>
+                    </div>
+
+                    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="report-submit-btn">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Item Modal -->
+    <div class="modal-backdrop" id="claim-modal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h2>🙋 Submit a Claim</h2>
+                <button class="modal-close" title="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="claim-description">
+                    By submitting a claim, you're telling the finder that this item belongs to you.
+                    The finder will review your claim and can approve or reject it.
+                    If approved, the item will be marked as <strong>Returned</strong> and the finder earns <strong>10
+                        points 🏆</strong>.
+                </p>
+                <form id="claim-form">
+                    <input type="hidden" id="claim-item-id">
+                    <input type="hidden" id="claim-owner-id">
+                    <div style="display:flex; gap:12px; justify-content:flex-end;">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-claim" id="claim-submit-btn">🙋 Submit Claim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Claims Modal -->
+    <div class="modal-backdrop" id="claims-view-modal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h2>📋 Claim Requests</h2>
+                <button class="modal-close" title="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="claims-view-item-id">
+                <div class="claims-list" id="claims-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts (order matters!) -->
+    <script src="js/local-db.js?v=2"></script>
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/items.js?v=2"></script>
+    <script src="js/claims.js?v=2"></script>
+    <script src="js/leaderboard.js?v=2"></script>
+    <script src="js/dashboard.js?v=2"></script>
+
+</body>
+
+</html>
