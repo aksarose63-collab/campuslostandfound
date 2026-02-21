@@ -101,7 +101,7 @@ Users earn reward points for returning lost items, and a leaderboard highlights 
 **System Architecture:**
 
 <p align="center">
-  <img src="./banner.png" alt="Project Banner" width="100%">
+  <img src="./ChatGPT Image Feb 21, 2026, 11_54_57 AM.png" alt="Project Banner" width="100%">
 </p>
 
 
